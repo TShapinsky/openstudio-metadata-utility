@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "openstudio_metadata_utility"
+version = "0.1.0"
+description = ""
+authors = ["TShapinsky <tobiasshapinsky@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openstudio = "3.1.0"
+networkx = "^2.5.1"
+matplotlib = "^3.4.2"
+graphviz = "^0.16"
+pydot = "^1.4.2"
+# tasty = { path = "../tasty/", develop = true }
+tasty = { git = "https://github.com/NREL/tasty.git", branch = "feat/openstudio-translation-shapes" }
+importlib-metadata = {version = "^2.0", python = "<3.8"}
+rdflib = "^5.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

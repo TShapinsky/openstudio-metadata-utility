@@ -340,7 +340,7 @@ description = "Provides an SDK for building up semantic metadata models using a 
 category = "main"
 optional = false
 python-versions = "^3.7.1"
-develop = false
+develop = true
 
 [package.dependencies]
 frozendict = "^1.2"
@@ -352,10 +352,8 @@ rdflib = "^5.0.0"
 requests = "^2.24.0"
 
 [package.source]
-type = "git"
-url = "https://github.com/NREL/tasty.git"
-reference = "feat/openstudio-translation-shapes"
-resolved_reference = "c11b0b9f83a09e424a1f8407383471bb7b4373de"
+type = "directory"
+url = "../tasty"
 
 [[package]]
 name = "urllib3"
@@ -373,7 +371,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "588ba1ef3d0042e4782f65eb07882bb04cbb3b8cf337f20e62a2da11e4b092ac"
+content-hash = "defe23b43a32970a4e9620706dbfb2a7c628fb8baba6e348e0aa8719533ea2cd"
 
 [metadata.files]
 attrs = [

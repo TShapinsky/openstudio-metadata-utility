@@ -4,7 +4,7 @@ from openstudio_metadata_utility.translator import Translator
 import tasty.graphs as tg
 import tasty.constants as tc
 
-file_name = 'smallHotel.osm'
+file_name = 'primarySchool.osm'
 building_name = file_name.replace('.osm', '')
 model = openstudio.model.Model().load(openstudio.path(os.path.join(os.path.dirname(__file__),"data", file_name))).get()
 

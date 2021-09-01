@@ -1,5 +1,7 @@
 from typing import cast
+from openstudio import openstudiomodelcore
 from openstudio.openstudiomodelcore import Model_load
+from openstudio import IddObjectType as idd
 import tasty.entities as te
 import openstudio
 import inspect
@@ -47,18 +49,26 @@ class MetaNode:
             if uri in self.nodes:
                 if type(node) == MetaNode:
                     self.nodes[uri].add_relationship(relationship, node.of_URI(uri))
+                    if hasattr(relationship, 'inverse'):
+                            node.of_URI(uri).add_relationship(relationship.inverse, self.nodes[uri])
                     self.nodes[uri].sync()
                 elif type(node) == te.EntityType:
                     self.nodes[uri].add_relationship(relationship, node)
+                    if hasattr(relationship, 'inverse'):
+                            node.add_relationship(relationship.inverse, self.nodes[uri])
                     self.nodes[uri].sync()
         elif type(relationship) == MetaRef:
             for uri, ref in relationship.all_refs().items():
                 if uri in self.nodes:
                     if type(node) == MetaNode:
                         self.nodes[uri].add_relationship(ref, node.of_URI(uri))
+                        if hasattr(ref, 'inverse'):
+                            node.of_URI(uri).add_relationship(ref.inverse, self.nodes[uri])
                         self.nodes[uri].sync()
                     elif type(node) == te.EntityType:
                         self.nodes[uri].add_relationship(relationship, node)
+                        if hasattr(ref, 'inverse'):
+                            node.add_relationship(ref.inverse, self.nodes[uri])
                         self.nodes[uri].sync()
 
     def of_URI(self, uri):
@@ -108,6 +118,15 @@ class PlantType(Enum):
         elif 'Heat-Pump' in plant_name:
             return PlantType.HEAT_PUMP
 
+    def plant_type_from_object(plant_object):
+        loop_type = plant_object.sizingPlant().loopType()
+        if 'Heating'==loop_type:
+            return PlantType.HOT_WATER
+        elif 'Cooling'==loop_type:
+            return PlantType.CHILLED_WATER
+        elif 'Condenser'==loop_type:
+            return PlantType.CONDENSER_WATER
+
 def name_to_id(name):
     return name.replace(' ','-')
 
@@ -124,3 +143,37 @@ def cast_openstudio_object(model_object):
         if inspect.ismodule(member[1]):
             if hasattr(member[1], cast_func_name):
                 return getattr(member[1], cast_func_name)(model_object).get()
+
+def zone_get_fcu(zone_object):
+    for equip in zone_object.equipment():
+        equip_object = cast_openstudio_object(equip)
+        if equip_object.iddObjectType() == idd('OS:ZoneHVAC:FourPipeFanCoil'):
+            return equip_object
+    return False
+
+def zone_get_exhaust(zone_object):
+    for equip in zone_object.equipment():
+        equip_object = cast_openstudio_object(equip)
+        if equip_object.iddObjectType() == idd('OS:Fan:ZoneExhaust'):
+            return equip_object
+    return False
+
+def get_coils_from_list(equips):
+    coils = []
+    for equip in equips:
+        idd_type = equip.iddObjectType()
+        if idd_type == idd("OS:Coil:Heating:Electric"):
+            coils.append(equip)
+        elif idd_type == idd("OS:Coil:Heating:Water"):
+            coils.append(equip)
+        elif idd_type == idd("OS:Coil:Cooling:Water"):
+            coils.append(equip)
+        elif idd_type == idd("OS:Coil:Heating:Gas"):
+            coils.append(equip)
+        elif idd_type == idd("OS:Coil:Cooling:DX:SingleSpeed"):
+            coils.append(equip)
+        elif idd_type == idd("OS:Coil:Cooling:DX:TwoSpeed"):
+            coils.append(equip)
+    return coils
+    
+

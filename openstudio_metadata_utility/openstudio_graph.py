@@ -39,7 +39,7 @@ class OpenStudioGraph(nx.DiGraph):
 
     def subgraph(self, nodes):
         new_graph = super().subgraph(nodes)
-        new_graph.extras = self.extras
+        new_graph.extras = self.extras.copy()
         return new_graph
 
     def get_downstream_subgraph(self, node, stop_at_types=None, stop_at_nodes=None) -> 'OpenStudioGraph':
@@ -140,7 +140,9 @@ class OpenStudioGraph(nx.DiGraph):
         self.extras[key] = value
 
     def get_extra(self, key):
-        return self.extras[key]
+        if key in self.extras:
+            return self.extras[key]
+        return None
 
     class Direction(Enum):
         FORWARD = 1

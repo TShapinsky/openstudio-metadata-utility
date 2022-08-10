@@ -170,11 +170,11 @@ python-versions = ">=3.8"
 
 [[package]]
 name = "openstudio"
-version = "3.1.0"
+version = "3.4.0"
 description = "OpenStudio python bindings."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7.1"
 
 [[package]]
 name = "owlrl"
@@ -446,7 +446,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "e00d3af0c0f67efddceb95ef2e9a67f92d90fb077f9a4cf3728907144b012787"
+content-hash = "e3d966606e049bb11bba81e57f8661c86574457e0fbce68bb607eab567bf19ea"
 
 [metadata.files]
 attrs = []

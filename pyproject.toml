@@ -6,7 +6,7 @@ authors = ["TShapinsky <tobiasshapinsky@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openstudio = "3.1.0"
+openstudio = "3.4.0"
 networkx = "^2.5.1"
 matplotlib = "^3.4.2"
 graphviz = "^0.16"
